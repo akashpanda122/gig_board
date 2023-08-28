@@ -25,8 +25,8 @@ describe("Tasks", function() {
             const creatorAddr = await addrs[0].getAddress();
             const duration = 30*86400;
     
-            await tasksV1.connect(addrs[0]).createTask(duration, jobDesc, { value: salary });
-            await tasksV1.connect(addrs[0]).createTask(duration, jobDesc, { value: salary });
+            await tasksV1.connect(addrs[0]).createTask(duration, jobDesc, "test", { value: salary });
+            await tasksV1.connect(addrs[0]).createTask(duration, jobDesc, "test", { value: salary });
     
             const list = await tasksV1.getCreatedTask(creatorAddr);
             expect(list).length(2);
@@ -46,7 +46,9 @@ describe("Tasks", function() {
     
             //taskid should be 3
             await tasksV1.connect(addrs[0])
-                .createTask(duration, jobDesc, { value: salary });
+                .createTask(duration, jobDesc, "test", { 
+                    value: salary 
+                });
             const taskId = 3;
     
             await tasksV1.connect(addrs[0]).cancelTask(taskId);
@@ -160,7 +162,9 @@ describe("Tasks", function() {
             const beforeBal = await addrs[0].getBalance();
     
             await tasksV1.connect(addrs[0])
-                .createTask(0 * 86400, jobDesc, { value: salary });
+                .createTask(0 * 86400, jobDesc, "test", { 
+                    value: salary 
+                });
     
             await tasksV1.connect(addrs[1]).applyTask(taskId);
             await tasksV1.connect(addrs[0]).startTask(taskId, (await addrs[1].getAddress()));
@@ -172,7 +176,7 @@ describe("Tasks", function() {
     
             const taskId2 = tasksV1.taskCount();
             await tasksV1.connect(addrs[0])
-                .createTask(86400 * 10, jobDesc, { value: salary });
+                .createTask(86400 * 10, jobDesc, "test", { value: salary });
             
             await tasksV1.connect(addrs[1]).applyTask(taskId2);
             await tasksV1.connect(addrs[0]).startTask(taskId2, (await addrs[1].getAddress()));
